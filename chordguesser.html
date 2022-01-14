@@ -1,0 +1,62 @@
+<html>
+
+
+<body>
+<h1>Guess the chord</h1>
+
+<script>   
+    
+    var C = { audio: new Audio('C.mp3'), name: "C" };    
+    var Dm = { audio: new Audio('Dm.mp3'), name: "Dm" };  
+    var Em = { audio: new Audio('Em.mp3'), name: "Em" };  
+    var F = { audio: new Audio('F.mp3'), name: "F" };  
+    var G = { audio: new Audio('G.mp3'), name: "G" };  
+    var Am = { audio: new Audio('Am.mp3'), name: "Am" };
+
+    var allChords = [C, Dm, Em, F, G, Am];
+    let currentChord;
+    let totalGuess = 0;
+    let correctGuess = 0;
+
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    function setRandomChord() {        
+        currentChord = allChords[getRandomInt(allChords.length)];
+    }
+
+    function playAudio() {   
+        currentChord.audio.pause();
+        currentChord.audio.currentTime = 0;
+        currentChord.audio.play();
+    }
+
+    function guess(chordName) {
+        totalGuess++;
+        if(chordName === currentChord.name) {
+            ++correctGuess;
+            console.log("Correct! Nice one!");
+        } else {
+            console.log("Wrong guess, sorry :(!")
+            console.log("The correct chord was: " + currentChord.name);
+            console.log("Your guess was: ", chordName)
+        }
+
+        setRandomChord();
+        console.log("Percent correct: ", (correctGuess / totalGuess)*100)
+        console.log("New chord is chosen");
+    }    
+
+    setRandomChord();
+</script>
+
+<button onclick="playAudio()">Play</button> </br></br></br>
+<button onclick="guess('C')">C</button>
+<button onclick="guess('Dm')">Dm</button>
+<button onclick="guess('Em')">Em</button>
+<button onclick="guess('F')">F</button>
+<button onclick="guess('G')">G</button>
+<button onclick="guess('Am')">Am</button>
+</body>
+</html>
