@@ -1,19 +1,47 @@
 <html>
 
 
-<body>
+<body onload="printBtn()">
 <h1>Guess the chord</h1>
 
 <script>   
     
-    var C = { audio: new Audio('C.mp3'), name: "C" };    
-    var Dm = { audio: new Audio('Dm.mp3'), name: "Dm" };  
-    var Em = { audio: new Audio('Em.mp3'), name: "Em" };  
-    var F = { audio: new Audio('F.mp3'), name: "F" };  
-    var G = { audio: new Audio('G.mp3'), name: "G" };  
-    var Am = { audio: new Audio('Am.mp3'), name: "Am" };
+    var A = { audio: new Audio('audio/A.wav'), name: "A" };    
+    var Am = { audio: new Audio('audio/Am.wav'), name: "Am" }; 
 
-    var allChords = [C, Dm, Em, F, G, Am];
+    var B = { audio: new Audio('audio/B.wav'), name: "B" };    
+    var Bm = { audio: new Audio('audio/Bm.wav'), name: "Bm" };             
+
+    var C = { audio: new Audio('audio/C.wav'), name: "C" };    
+    var Cm = { audio: new Audio('audio/Cm.wav'), name: "Cm" };     
+
+    var CSharp = { audio: new Audio('audio/CSharp.wav'), name: "C#" };    
+    var CSharpm = { audio: new Audio('audio/CSharpm.wav'), name: "C#m" };        
+
+    var D = { audio: new Audio('audio/D.wav'), name: "D" };    
+    var Dm = { audio: new Audio('audio/Dm.wav'), name: "Dm" };  
+
+    var DSharp = { audio: new Audio('audio/DSharp.wav'), name: "D#" };    
+    var DSharpm = { audio: new Audio('audio/DSharpm.wav'), name: "D#m" };    
+
+    var E = { audio: new Audio('audio/E.wav'), name: "E" };    
+    var Em = { audio: new Audio('audio/Em.wav'), name: "Em" };    
+
+    var F = { audio: new Audio('audio/F.wav'), name: "F" };    
+    var Fm = { audio: new Audio('audio/Fm.wav'), name: "Fm" };    
+
+    var FSharp = { audio: new Audio('audio/FSharp.wav'), name: "F#" };    
+    var FSharpM = { audio: new Audio('audio/FSharpm.wav'), name: "F#m" };    
+
+    var G = { audio: new Audio('audio/G.wav'), name: "G" };    
+    var Gm = { audio: new Audio('audio/Gm.wav'), name: "Gm" };    
+
+    var GSharp = { audio: new Audio('audio/GSharp.wav'), name: "G#" };    
+    var GSharpM = { audio: new Audio('audio/GSharpm.wav'), name: "G#m" };
+
+    var allChords = [A, Am, B, Bm, C, Cm, CSharp, CSharpm, D, Dm, DSharp, 
+    DSharpm, E, Em, F, Fm, FSharp, FSharpM, G, Gm, GSharp, GSharpM];
+    
     let currentChord;
     let totalGuess = 0;
     let correctGuess = 0;
@@ -27,6 +55,7 @@
     }
 
     function playAudio() {   
+        console.log(currentChord);
         currentChord.audio.pause();
         currentChord.audio.currentTime = 0;
         currentChord.audio.play();
@@ -36,27 +65,45 @@
         totalGuess++;
         if(chordName === currentChord.name) {
             ++correctGuess;
+            document.getElementById("feedback").textContent = "Correct! Nice one!";
             console.log("Correct! Nice one!");
         } else {
+            document.getElementById("feedback").textContent = `Wrong guess, sorry :(!, correct chord was ${currentChord.name}, you guessed ${chordName}`;
             console.log("Wrong guess, sorry :(!")
             console.log("The correct chord was: " + currentChord.name);
             console.log("Your guess was: ", chordName)
         }
 
         setRandomChord();
-        console.log("Percent correct: ", (correctGuess / totalGuess)*100)
+        document.getElementById("percentage").textContent = "Percent correct : " + (correctGuess / totalGuess)*100;        
         console.log("New chord is chosen");
     }    
+
+    function printBtn() {
+        for (var i = 0; i < allChords.length; i++) {
+            var btn = document.createElement("button");
+            btn.setAttribute("onclick", `guess('${allChords[i].name}')`);
+            var t = document.createTextNode(allChords[i].name);
+            btn.appendChild(t);
+            document.getElementById("buttons").appendChild(btn);
+        }
+    }
+
+    document.body.onkeyup = function(e){
+        if (event.code === 'Space') {
+            playAudio();
+        }
+    }
 
     setRandomChord();
 </script>
 
 <button onclick="playAudio()">Play</button> </br></br></br>
-<button onclick="guess('C')">C</button>
-<button onclick="guess('Dm')">Dm</button>
-<button onclick="guess('Em')">Em</button>
-<button onclick="guess('F')">F</button>
-<button onclick="guess('G')">G</button>
-<button onclick="guess('Am')">Am</button>
+
+<div id="feedback"></div>
+<div id="percentage"></div>
+
+<div id="buttons"></div>
+
 </body>
 </html>
